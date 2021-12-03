@@ -1,37 +1,34 @@
-import * as React from "react"
-import {
-  Box,
-  Text,
-  Link,
-  VStack,
-  Code,
-  Grid,
-} from "@chakra-ui/react"
-import { ColorModeSwitcher } from "./ColorModeSwitcher"
-import { Logo } from "./Logo"
+import * as React from "react";
+import { Box, VStack, Grid, Button, Center, Text } from "@chakra-ui/react";
 import { ThemeProvider } from "./views/themeProvider";
+import { NameInput } from "./views/NameInput/nameInput";
+import { useState } from "react";
+import { NameRow } from "./views/NameRow/nameRow";
 
-export const App = () => (
-  <ThemeProvider>
-    <Box textAlign="center" fontSize="xl">
-      <Grid minH="100vh" p={3}>
-        <ColorModeSwitcher justifySelf="flex-end" />
-        <VStack spacing={8}>
-          <Logo h="40vmin" pointerEvents="none" />
-          <Text>
-            Edit <Code fontSize="xl">src/App.tsx</Code> and save to reload.
-          </Text>
-          <Link
-            color="teal.500"
-            href="https://chakra-ui.com"
-            fontSize="2xl"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn Chakra
-          </Link>
-        </VStack>
-      </Grid>
-    </Box>
-  </ThemeProvider>
-)
+export const App = () => {
+  const [nameList, setNameList] = useState<string[]>([]);
+
+  return (
+    <ThemeProvider>
+      <Box textAlign="center" fontSize="xl">
+        <Grid minH="100vh" p={3}>
+          <VStack spacing={8}>
+            {nameList.map((name, index) => (
+              <NameRow
+                name={name}
+                onDelete={() => {
+                  console.log(name);
+                }}
+              />
+            ))}
+            <NameInput
+              onAdd={(name) => {
+                setNameList([...nameList, name]);
+              }}
+            />
+          </VStack>
+        </Grid>
+      </Box>
+    </ThemeProvider>
+  );
+};
