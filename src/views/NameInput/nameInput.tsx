@@ -6,7 +6,7 @@ import {
   HStack,
   Input,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 type NameInputProps = {
   onAdd: (name: string) => void;
@@ -20,6 +20,7 @@ export const NameInput: React.FC<NameInputProps> = ({ onAdd }) => {
       <Input
         type="text"
         placeholder="Name"
+        value={name}
         onChange={(e) => {
           setName(e.target.value);
         }}
@@ -27,6 +28,7 @@ export const NameInput: React.FC<NameInputProps> = ({ onAdd }) => {
       <Button
         onClick={() => {
           onAdd(name);
+          setName("");
         }}
       >
         ADD
