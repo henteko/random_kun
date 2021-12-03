@@ -17,7 +17,7 @@ type NameRowProps = {
 
 export const NameRow: React.FC<NameRowProps> = ({ name, onDelete }) => {
   return (
-    <HStack>
+    <HStack key={name}>
       <Text>{name}</Text>
       <Button variant="ghost">
         <EditIcon />

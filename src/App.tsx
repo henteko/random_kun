@@ -16,8 +16,11 @@ export const App = () => {
             {nameList.map((name, index) => (
               <NameRow
                 name={name}
+                key={index}
                 onDelete={() => {
-                  console.log(name);
+                  const newNameList = [...nameList];
+                  newNameList.splice(index, 1);
+                  setNameList(newNameList);
                 }}
               />
             ))}
