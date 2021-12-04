@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Box, VStack, Grid, Button, Center, Text } from "@chakra-ui/react";
+import { Box, VStack, Grid } from "@chakra-ui/react";
 import { ThemeProvider } from "./views/themeProvider";
 import { NameInput } from "./views/NameInput/nameInput";
 import { useState } from "react";
