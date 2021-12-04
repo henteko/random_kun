@@ -1,4 +1,4 @@
-Random Kun
+[Random Kun](https://henteko.github.io/random_kun/)
 
 ## Development
 
