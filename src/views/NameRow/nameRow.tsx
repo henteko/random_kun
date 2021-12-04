@@ -1,5 +1,10 @@
 import * as React from "react";
-import { Text, HStack, Button } from "@chakra-ui/react";
+import {
+  Button,
+  Input,
+  InputRightElement,
+  InputGroup,
+} from "@chakra-ui/react";
 import { DeleteIcon } from "@chakra-ui/icons";
 
 type NameRowProps = {
@@ -9,16 +14,19 @@ type NameRowProps = {
 
 export const NameRow: React.FC<NameRowProps> = ({ name, onDelete }) => {
   return (
-    <HStack key={name}>
-      <Text>{name}</Text>
-      <Button
-        variant="ghost"
-        onClick={() => {
-          onDelete();
-        }}
-      >
-        <DeleteIcon />
-      </Button>
-    </HStack>
+    <InputGroup>
+      <Input value={name} isReadOnly />
+      <InputRightElement>
+        <Button
+          variant="outline"
+          borderLeftRadius="0"
+          onClick={() => {
+            onDelete();
+          }}
+        >
+          <DeleteIcon />
+        </Button>
+      </InputRightElement>
+    </InputGroup>
   );
 };

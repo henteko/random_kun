@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Box, VStack, Grid } from "@chakra-ui/react";
+import { Stack, Center, Spacer } from "@chakra-ui/react";
 import { ThemeProvider } from "./views/themeProvider";
 import { NameInput } from "./views/NameInput/nameInput";
 import { useState } from "react";
@@ -10,9 +10,15 @@ export const App = () => {
 
   return (
     <ThemeProvider>
-      <Box textAlign="center" fontSize="xl">
-        <Grid minH="100vh" p={3}>
-          <VStack spacing={8}>
+      <Center height="100vh">
+        <Stack minWidth="md">
+          <NameInput
+            onAdd={(name) => {
+              setNameList([name, ...nameList]);
+            }}
+          />
+          <Spacer />
+          <Stack>
             {nameList.map((name, index) => (
               <NameRow
                 name={name}
@@ -24,14 +30,9 @@ export const App = () => {
                 }}
               />
             ))}
-            <NameInput
-              onAdd={(name) => {
-                setNameList([...nameList, name]);
-              }}
-            />
-          </VStack>
-        </Grid>
-      </Box>
+          </Stack>
+        </Stack>
+      </Center>
     </ThemeProvider>
   );
 };
