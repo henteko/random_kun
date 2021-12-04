@@ -1,10 +1,5 @@
 import * as React from "react";
-import {
-  Button,
-  Input,
-  InputRightElement,
-  InputGroup,
-} from "@chakra-ui/react";
+import { Button, Input, InputRightElement, InputGroup } from "@chakra-ui/react";
 import { DeleteIcon } from "@chakra-ui/icons";
 
 type NameRowProps = {

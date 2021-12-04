@@ -1,9 +1,10 @@
 import * as React from "react";
-import {Stack, Center, Spacer, Heading, Flex, Button} from "@chakra-ui/react";
+import { Stack, Center, Spacer, Heading, Flex, Button } from "@chakra-ui/react";
 import { ThemeProvider } from "./views/themeProvider";
 import { NameInput } from "./views/NameInput/nameInput";
 import { useState } from "react";
 import { NameRow } from "./views/NameRow/nameRow";
+import { RandomNameModal } from "./views/RandomNameModal/randomNameModal";
 
 export const App = () => {
   const [nameList, setNameList] = useState<string[]>([]);
@@ -11,14 +12,29 @@ export const App = () => {
 
   return (
     <ThemeProvider>
+      <RandomNameModal
+        name={selectName}
+        onClosed={() => {
+          setSelectName(undefined);
+        }}
+      />
       <Center height="100vh">
         <Stack minWidth="md">
           <Flex>
-            <Heading as="h1" fontSize='4xl'>Random Kun</Heading>
+            <Heading as="h1" fontSize="4xl">
+              Random Kun
+            </Heading>
             <Spacer />
-            <Button isDisabled={nameList.length < 1} onClick={() => {
-              setSelectName(nameList[Math.floor(Math.random() * nameList.length)]);
-            }}>GO!!</Button>
+            <Button
+              isDisabled={nameList.length < 1}
+              onClick={() => {
+                setSelectName(
+                  nameList[Math.floor(Math.random() * nameList.length)]
+                );
+              }}
+            >
+              GO!!
+            </Button>
           </Flex>
           <NameInput
             onAdd={(name) => {
