@@ -1,12 +1,13 @@
 import * as React from "react";
 import {
   Button,
-  FormControl,
-  FormLabel,
   HStack,
   Input,
+  InputGroup,
+  InputRightElement,
 } from "@chakra-ui/react";
-import { useRef, useState } from "react";
+import { useState } from "react";
+import { AddIcon } from "@chakra-ui/icons";
 
 type NameInputProps = {
   onAdd: (name: string) => void;
@@ -17,22 +18,29 @@ export const NameInput: React.FC<NameInputProps> = ({ onAdd }) => {
 
   return (
     <HStack>
-      <Input
-        type="text"
-        placeholder="Name"
-        value={name}
-        onChange={(e) => {
-          setName(e.target.value);
-        }}
-      ></Input>
-      <Button
-        onClick={() => {
+      <form
+        onSubmit={(event) => {
+          event.preventDefault();
           onAdd(name);
           setName("");
         }}
       >
-        ADD
-      </Button>
+        <InputGroup>
+          <Input
+            type="text"
+            placeholder="Name"
+            value={name}
+            onChange={(e) => {
+              setName(e.target.value);
+            }}
+          />
+          <InputRightElement>
+            <Button type="submit" borderLeftRadius="0">
+              <AddIcon />
+            </Button>
+          </InputRightElement>
+        </InputGroup>
+      </form>
     </HStack>
   );
 };
