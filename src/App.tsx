@@ -6,24 +6,40 @@ import { useState, useEffect, useCallback } from "react";
 import { NameRow } from "./views/NameRow/nameRow";
 import { RandomNameModal } from "./views/RandomNameModal/randomNameModal";
 
+type Member = {
+  name: string;
+  isActive: boolean;
+}
+
 export const App = () => {
-  const [nameList, setNameList] = useState<string[]>([]);
+  const [memberList, setMemberList] = useState<Member[]>([]);
   const [selectName, setSelectName] = useState<string | undefined>(undefined);
   const queryParams = new URLSearchParams(window.location.search);
   const namesFromQuery= queryParams.getAll("names");
 
   useEffect(() => {
-    setNameList(namesFromQuery);
+    // namesFromQueryからmemberListを作成
+    const newMemberList = namesFromQuery.map((name) => {
+      return {
+        name,
+        isActive: true,
+      };
+    });
+    setMemberList(newMemberList);
   }, []);
 
-  const resetNamesSearchParams = useCallback((names: string[]) => {
+  useEffect(() => {
     const url = new URL(window.location.toString());
     url.searchParams.delete("names");
-    names.forEach((name) => {
+
+    // memberListからnameの一覧を取得
+    const nameList = memberList.map((member) => member.name);
+    nameList.forEach((name) => {
       url.searchParams.append('names', name);
     });
+
     window.history.pushState({}, '', url);
-  }, []);
+  }, [memberList]);
 
   return (
     <ThemeProvider>
@@ -41,11 +57,13 @@ export const App = () => {
             </Heading>
             <Spacer />
             <Button
-              isDisabled={nameList.length < 1}
+              isDisabled={memberList.filter((member) => member.isActive).length < 1}
               onClick={() => {
-                setSelectName(
-                  nameList[Math.floor(Math.random() * nameList.length)]
-                );
+                // memberListの中からisActiveがtrueのものだけを抽出し、その中からランダムに1つ選ぶ
+                const activeMemberList = memberList.filter((member) => member.isActive);
+                const randomIndex = Math.floor(Math.random() * activeMemberList.length);
+                const randomMember = activeMemberList[randomIndex];
+                setSelectName(randomMember.name);
               }}
             >
               GO!!
@@ -53,21 +71,26 @@ export const App = () => {
           </Flex>
           <NameInput
             onAdd={(name) => {
-              setNameList([name, ...nameList]);
-              resetNamesSearchParams([name, ...nameList]);
+              setMemberList([{ name, isActive: true }, ...memberList]);
             }}
           />
           <Spacer />
           <Stack>
-            {nameList.map((name, index) => (
+            {memberList.map((member, index) => (
               <NameRow
-                name={name}
+                name={member.name}
+                isActive={member.isActive}
                 key={index}
                 onDelete={() => {
-                  const newNameList = [...nameList];
-                  newNameList.splice(index, 1);
-                  setNameList(newNameList);
-                  resetNamesSearchParams(newNameList);
+                  const newMemberList = [...memberList];
+                  newMemberList.splice(index, 1);
+                  setMemberList(newMemberList);
+                }}
+                onToggleActive={() => {
+                  // memberListのindex番目のisActiveを反転させる
+                  const newMemberList = [...memberList];
+                  newMemberList[index].isActive = !newMemberList[index].isActive;
+                  setMemberList(newMemberList);
                 }}
               />
             ))}
