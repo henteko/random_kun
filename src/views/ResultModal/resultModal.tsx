@@ -12,22 +12,22 @@ import {
 } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
 
-type RandomNameModalProps = {
-  name: string | undefined;
+type ResultModalProps = {
+  resultList: string[] | undefined;
   onClosed: () => void;
 };
 
-export const RandomNameModal: React.FC<RandomNameModalProps> = ({
-  name = undefined,
+export const ResultModal: React.FC<ResultModalProps> = ({
+  resultList = undefined,
   onClosed,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    if (name !== undefined) {
+    if (resultList !== undefined) {
       setIsOpen(true);
     }
-  }, [name]);
+  }, [resultList]);
 
   const handleClose = useCallback(() => {
     setIsOpen(false);
@@ -35,13 +35,17 @@ export const RandomNameModal: React.FC<RandomNameModalProps> = ({
   }, []);
 
   return (
-    <Modal isOpen={isOpen} onClose={handleClose}>
+    <Modal isOpen={isOpen} onClose={handleClose} size='xl'>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Result</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Text fontSize="6xl">{name}</Text>
+          {
+            resultList?.map((result) => (
+              <Text fontSize="5xl">{result}</Text>
+            ))
+          }
         </ModalBody>
         <ModalFooter>
           <Button onClick={handleClose}>Close</Button>

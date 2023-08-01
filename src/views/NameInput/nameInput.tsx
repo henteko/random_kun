@@ -21,7 +21,7 @@ export const NameInput: React.FC<NameInputProps> = ({ onAdd }) => {
       <InputGroup>
         <Input
           type="text"
-          placeholder="Name"
+          placeholder="Member Name"
           value={name}
           onChange={(e) => {
             setName(e.target.value);

@@ -1,19 +1,41 @@
 import * as React from "react";
-import { Stack, Center, Spacer, Heading, Flex, Button } from "@chakra-ui/react";
+import {Stack, Center, Spacer, Heading, Button, HStack} from "@chakra-ui/react";
 import { ThemeProvider } from "./views/themeProvider";
 import { NameInput } from "./views/NameInput/nameInput";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { NameRow } from "./views/NameRow/nameRow";
-import { RandomNameModal } from "./views/RandomNameModal/randomNameModal";
+import { ResultModal } from "./views/ResultModal/resultModal";
 
 type Member = {
   name: string;
   isActive: boolean;
 }
 
+function shuffleArray<T>(array: T[]): T[] {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+function generatePairs(members: Member[]): [Member, Member][] {
+  const shuffledMembers = shuffleArray(members);
+  let pairs: [Member, Member][] = [];
+
+  for (let i = 0; i < shuffledMembers.length; i += 2) {
+    // Check if pair can be created
+    if (i + 1 < shuffledMembers.length) {
+      pairs.push([shuffledMembers[i], shuffledMembers[i + 1]]);
+    }
+  }
+
+  return pairs;
+}
+
 export const App = () => {
   const [memberList, setMemberList] = useState<Member[]>([]);
-  const [selectName, setSelectName] = useState<string | undefined>(undefined);
+  const [resultList, setResultList] = useState<string[] | undefined>(undefined);
   const queryParams = new URLSearchParams(window.location.search);
   const namesFromQuery= queryParams.getAll("names");
 
@@ -43,32 +65,46 @@ export const App = () => {
 
   return (
     <ThemeProvider>
-      <RandomNameModal
-        name={selectName}
+      <ResultModal
+        resultList={resultList}
         onClosed={() => {
-          setSelectName(undefined);
+          setResultList(undefined);
         }}
       />
       <Center height="100vh">
         <Stack minWidth="md">
-          <Flex>
-            <Heading as="h1" fontSize="4xl">
-              Random Kun
-            </Heading>
-            <Spacer />
+          <Heading as="h1" fontSize="4xl">
+            Random Kun
+          </Heading>
+          <HStack>
             <Button
               isDisabled={memberList.filter((member) => member.isActive).length < 1}
               onClick={() => {
-                // memberListの中からisActiveがtrueのものだけを抽出し、その中からランダムに1つ選ぶ
                 const activeMemberList = memberList.filter((member) => member.isActive);
                 const randomIndex = Math.floor(Math.random() * activeMemberList.length);
                 const randomMember = activeMemberList[randomIndex];
-                setSelectName(randomMember.name);
+                setResultList([randomMember.name]);
               }}
             >
-              GO!!
+              Select one member
             </Button>
-          </Flex>
+            <Button
+              isDisabled={memberList.filter((member) => member.isActive).length < 2}
+              onClick={() => {
+                const activeMemberList = memberList.filter((member) => member.isActive);
+                const pairs = generatePairs(activeMemberList);
+
+                const pairNames = pairs.map((pair) => {
+                  const pairName = `${pair[0].name} & ${pair[1].name}`;
+                  return pairName;
+                });
+                setResultList(pairNames);
+              }}
+            >
+              Make a pair
+            </Button>
+          </HStack>
+          <Spacer />
           <NameInput
             onAdd={(name) => {
               setMemberList([{ name, isActive: true }, ...memberList]);
