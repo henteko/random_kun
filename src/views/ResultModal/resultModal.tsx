@@ -29,23 +29,21 @@ export const ResultModal: React.FC<ResultModalProps> = ({
     }
   }, [resultList]);
 
-  const handleClose = useCallback(() => {
+  const handleClose = () => {
     setIsOpen(false);
     onClosed();
-  }, []);
+  };
 
   return (
-    <Modal isOpen={isOpen} onClose={handleClose} size='xl'>
+    <Modal isOpen={isOpen} onClose={handleClose} size="xl">
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Result</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          {
-            resultList?.map((result) => (
-              <Text fontSize="5xl">{result}</Text>
-            ))
-          }
+          {resultList?.map((result) => (
+            <Text fontSize="5xl">{result}</Text>
+          ))}
         </ModalBody>
         <ModalFooter>
           <Button onClick={handleClose}>Close</Button>

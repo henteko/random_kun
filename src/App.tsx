@@ -1,5 +1,12 @@
 import * as React from "react";
-import {Stack, Center, Spacer, Heading, Button, HStack} from "@chakra-ui/react";
+import {
+  Stack,
+  Center,
+  Spacer,
+  Heading,
+  Button,
+  HStack,
+} from "@chakra-ui/react";
 import { ThemeProvider } from "./views/themeProvider";
 import { NameInput } from "./views/NameInput/nameInput";
 import { useState, useEffect } from "react";
@@ -9,7 +16,7 @@ import { ResultModal } from "./views/ResultModal/resultModal";
 type Member = {
   name: string;
   isActive: boolean;
-}
+};
 
 function shuffleArray<T>(array: T[]): T[] {
   for (let i = array.length - 1; i > 0; i--) {
@@ -37,7 +44,7 @@ export const App = () => {
   const [memberList, setMemberList] = useState<Member[]>([]);
   const [resultList, setResultList] = useState<string[] | undefined>(undefined);
   const queryParams = new URLSearchParams(window.location.search);
-  const namesFromQuery= queryParams.getAll("names");
+  const namesFromQuery = queryParams.getAll("names");
 
   useEffect(() => {
     // namesFromQueryからmemberListを作成
@@ -48,7 +55,7 @@ export const App = () => {
       };
     });
     setMemberList(newMemberList);
-  }, []);
+  });
 
   useEffect(() => {
     const url = new URL(window.location.toString());
@@ -57,10 +64,10 @@ export const App = () => {
     // memberListからnameの一覧を取得
     const nameList = memberList.map((member) => member.name);
     nameList.forEach((name) => {
-      url.searchParams.append('names', name);
+      url.searchParams.append("names", name);
     });
 
-    window.history.pushState({}, '', url);
+    window.history.pushState({}, "", url);
   }, [memberList]);
 
   return (
@@ -78,10 +85,16 @@ export const App = () => {
           </Heading>
           <HStack>
             <Button
-              isDisabled={memberList.filter((member) => member.isActive).length < 1}
+              isDisabled={
+                memberList.filter((member) => member.isActive).length < 1
+              }
               onClick={() => {
-                const activeMemberList = memberList.filter((member) => member.isActive);
-                const randomIndex = Math.floor(Math.random() * activeMemberList.length);
+                const activeMemberList = memberList.filter(
+                  (member) => member.isActive
+                );
+                const randomIndex = Math.floor(
+                  Math.random() * activeMemberList.length
+                );
                 const randomMember = activeMemberList[randomIndex];
                 setResultList([randomMember.name]);
               }}
@@ -89,9 +102,13 @@ export const App = () => {
               Select one member
             </Button>
             <Button
-              isDisabled={memberList.filter((member) => member.isActive).length < 2}
+              isDisabled={
+                memberList.filter((member) => member.isActive).length < 2
+              }
               onClick={() => {
-                const activeMemberList = memberList.filter((member) => member.isActive);
+                const activeMemberList = memberList.filter(
+                  (member) => member.isActive
+                );
                 const pairs = generatePairs(activeMemberList);
 
                 const pairNames = pairs.map((pair) => {
@@ -125,7 +142,8 @@ export const App = () => {
                 onToggleActive={() => {
                   // memberListのindex番目のisActiveを反転させる
                   const newMemberList = [...memberList];
-                  newMemberList[index].isActive = !newMemberList[index].isActive;
+                  newMemberList[index].isActive =
+                    !newMemberList[index].isActive;
                   setMemberList(newMemberList);
                 }}
               />
