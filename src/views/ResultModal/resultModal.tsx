@@ -10,7 +10,7 @@ import {
   ModalBody,
   ModalFooter,
 } from "@chakra-ui/react";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 type ResultModalProps = {
   resultList: string[] | undefined;

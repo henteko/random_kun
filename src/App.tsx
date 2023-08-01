@@ -47,6 +47,10 @@ export const App = () => {
   const namesFromQuery = queryParams.getAll("names");
 
   useEffect(() => {
+    if (memberList.length !== 0 || namesFromQuery.length === 0) {
+      return;
+    }
+
     // namesFromQueryからmemberListを作成
     const newMemberList = namesFromQuery.map((name) => {
       return {
@@ -55,7 +59,7 @@ export const App = () => {
       };
     });
     setMemberList(newMemberList);
-  });
+  }, [namesFromQuery, memberList]);
 
   useEffect(() => {
     const url = new URL(window.location.toString());
