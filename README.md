@@ -21,6 +21,4 @@ more information.
 
 ## Deploy
 
-```shell
-yarn deploy
-```
+Push to master to execute github actions.
