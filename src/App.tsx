@@ -103,9 +103,10 @@ export const App = () => {
                 setResultList([randomMember.name]);
               }}
             >
-              Select one member
+              1人を選ぶ
             </Button>
             <Button
+              variant="outline"
               isDisabled={
                 memberList.filter((member) => member.isActive).length < 2
               }
@@ -122,7 +123,7 @@ export const App = () => {
                 setResultList(pairNames);
               }}
             >
-              Make a pair
+              ペアの組み合わせを作る
             </Button>
           </HStack>
           <Spacer />
